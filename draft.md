@@ -393,7 +393,7 @@ parameters without knowledge of one another's code.
 
 3. Extensibility: TLS seeks to provide a framework into which new public key
 and bulk encryption methods can be incorporated as necessary. This will also
-accomplish two sub-goals: preventing the need to create a new protocol (and
+accomplish two sub-goals\: preventing the need to create a new protocol (and
 risking the introduction of possible new weaknesses) and avoiding the need to
 implement an entire new security library.
 
@@ -838,17 +838,17 @@ that no encryption, compression, or MAC will be used.
 The security parameters for a TLS Connection read and write state are set by
 providing the following values:
 
-connection end -
+connection end
 
 : Whether this entity is considered the "client" or the "server" in
   this connection.
 
-PRF algorithm -
+PRF algorithm
 
 : An algorithm used to generate keys from the master secret (see
   {{HMAC}} and {{key-calculation}}).
 
-bulk encryption algorithm -
+bulk encryption algorithm
 
 : An algorithm to be used for bulk encryption.  This specification
   includes the key size of this algorithm, whether it is a block,
@@ -856,27 +856,27 @@ bulk encryption algorithm -
   appropriate), and the lengths of explicit and implicit
   initialization vectors (or nonces).
 
-MAC algorithm -
+MAC algorithm
 
 : An algorithm to be used for message authentication.  This
   specification includes the size of the value returned by the MAC
   algorithm.
 
-compression algorithm -
+compression algorithm
 
 : An algorithm to be used for data compression.  This specification
   must include all information the algorithm requires to do
   compression.
 
-master secret -
+master secret
 
 : A 48-byte secret shared between the two peers in the connection.
 
-client random -
+client random
 
 : A 32-byte value provided by the client.
 
-server random -
+server random
 
 : A 32-byte value provided by the server.
 
@@ -936,19 +936,19 @@ the connection states can be instantiated by making them the current states.
 These current states MUST be updated for each record processed. Each connection
 state includes the following elements:
 
-compression state -
+compression state
 : The current state of the compression algorithm.
 
-cipher state -
+cipher state
 : The current state of the encryption algorithm.  This will consist
   of the scheduled key for that connection.  For stream ciphers,
   this will also contain whatever state information is necessary to
   allow the stream to continue to encrypt or decrypt data.
 
-MAC key -
+MAC key
 : The MAC key for this connection, as generated above.
 
-sequence number -
+sequence number
 : Each connection state contains a sequence number, which is
   maintained separately for read and write states.  The sequence
   number MUST be set to zero whenever a connection state is made the
@@ -989,10 +989,10 @@ message MAY be fragmented across several records).
            opaque fragment[TLSPlaintext.length];
        } TLSPlaintext;
 
-type -
+type
 : The higher-level protocol used to process the enclosed fragment.
 
-version -
+version
 : The version of the protocol being employed.  This document
   describes TLS Version 1.2, which uses the version { 3, 3 }.  The
   version value 3.3 is historical, deriving from the use of {3, 1}
@@ -1002,11 +1002,11 @@ version -
   {{backward-compatibility}} for discussion about what record layer
   version number should be employed for ClientHello.
 
-length -
+length
 : The length (in bytes) of the following TLSPlaintext.fragment.  The
   length MUST NOT exceed 2^14.
 
-fragment -
+fragment
 : The application data.  This data is transparent and treated as an
   independent block to be dealt with by the higher-level protocol
   specified by the type field.
@@ -1044,11 +1044,11 @@ bytes, it MUST report a fatal decompression failure error.
            opaque fragment[TLSCompressed.length];
        } TLSCompressed;
 
-length -
+length
 : The length (in bytes) of the following TLSCompressed.fragment.
   The length MUST NOT exceed 2^14 + 1024.
 
-fragment -
+fragment
 : The compressed form of TLSPlaintext.fragment.
 
 Note: A CompressionMethod.null operation is an identity operation; no fields
@@ -1075,17 +1075,17 @@ messages are detectable.
            } fragment;
        } TLSCiphertext;
 
-type -
+type
 : The type field is identical to TLSCompressed.type.
 
-version -
+version
 : The version field is identical to TLSCompressed.version.
 
-length -
+length
 : The length (in bytes) of the following TLSCiphertext.fragment.
   The length MUST NOT exceed 2^14 + 2048.
 
-fragment -
+fragment
 : The encrypted form of TLSCompressed.fragment, with the MAC.
 
 ####  Null or Standard Stream Cipher
@@ -1109,10 +1109,10 @@ The MAC is generated as:
 
 where "+" denotes concatenation.
 
-seq_num -
+seq_num
 : The sequence number for this record.
 
-MAC -
+MAC
 : The MAC algorithm specified by SecurityParameters.mac_algorithm.
 
 Note that the MAC is computed before encryption. The stream cipher encrypts the
@@ -1142,7 +1142,7 @@ TLSCiphertext.fragment structures.
 
 The MAC is generated as described in {{null-or-standard-stream-cipher}}.
 
-IV -
+IV
 : The Initialization Vector (IV) SHOULD be chosen at random, and
   MUST be unpredictable.  Note that in versions of TLS prior to 1.1,
   there was no IV field, and the last ciphertext block of the
@@ -1152,7 +1152,7 @@ IV -
   SecurityParameters.record_iv_length, which is equal to the
   SecurityParameters.block_size.
 
-padding -
+padding
 : Padding that is added to force the length of the plaintext to be
   an integral multiple of the block cipher's block length.  The
   padding MAY be any length up to 255 bytes, as long as it results
@@ -1164,7 +1164,7 @@ padding -
   MUST check this padding and MUST use the bad_record_mac alert to
   indicate padding errors.
 
-padding_length -
+padding_length
 : The padding length MUST be such that the total size of the
   GenericBlockCipher structure is a multiple of the cipher's block
   length.  Legal values range from zero to 255, inclusive.  This
@@ -1309,28 +1309,28 @@ negotiated security parameters, and to report error conditions to each other.
 The Handshake Protocol is responsible for negotiating a session, which consists
 of the following items:
 
-session identifier -
+session identifier
 : An arbitrary byte sequence chosen by the server to identify an
   active or resumable session state.
 
-peer certificate -
+peer certificate
 : X509v3 {{RFC3280}} certificate of the peer.  This element of the state
   may be null.
 
-compression method -
+compression method
 : The algorithm used to compress data prior to encryption.
 
-cipher spec -
+cipher spec
 : Specifies the pseudorandom function (PRF) used to generate keying
   material, the bulk data encryption algorithm (such as null, AES,
   etc.) and the MAC algorithm (such as HMAC-SHA1).  It also defines
   cryptographic attributes such as the mac_length.  (See
   {{the-security-parameters}} for formal definition.)
 
-master secret -
+master secret
 : 48-byte secret shared between the client and server.
 
-is resumable -
+is resumable
 : A flag indicating whether the session can be used to initiate new
   connections.
 
@@ -1422,7 +1422,7 @@ The client and the server must share knowledge that the connection is ending in
 order to avoid a truncation attack. Either party may initiate the exchange of
 closing messages.
 
-close_notify -
+close_notify
 : This message notifies the recipient that the sender will not send
   any more messages on this connection.  Note that as of TLS 1.1,
   failure to properly close a connection no longer requires that a
@@ -1482,12 +1482,12 @@ connection, it would not generally send a certificate_expired alert.
 
 The following error alerts are defined:
 
-unexpected_message -
+unexpected_message
 : An inappropriate message was received.  This alert is always fatal
   and should never be observed in communication between proper
   implementations.
 
-bad_record_mac -
+bad_record_mac
 : This alert is returned if a record is received with an incorrect
   MAC.  This alert also MUST be returned if an alert is sent because
   a TLSCiphertext decrypted in an invalid way: either it wasn't an
@@ -1496,12 +1496,12 @@ bad_record_mac -
   never be observed in communication between proper implementations
   (except when messages were corrupted in the network).
 
-decryption_failed_RESERVED -
+decryption_failed_RESERVED
 : This alert was used in some earlier versions of TLS, and may have
   permitted certain attacks against the CBC mode {{CBCATT}}.  It MUST
   NOT be sent by compliant implementations.
 
-record_overflow -
+record_overflow
 : A TLSCiphertext record was received that had a length more than
   2^14+2048 bytes, or a record decrypted to a TLSCompressed record
   with more than 2^14+1024 bytes.  This message is always fatal and
@@ -1509,7 +1509,7 @@ record_overflow -
   implementations (except when messages were corrupted in the
   network).
 
-decompression_failure -
+decompression_failure
 : The decompression function received improper input (e.g., data
   that would expand to excessive length).  This message is always
   fatal and should never be observed in communication between proper
@@ -1551,52 +1551,52 @@ unknown_ca
   be located or couldn't be matched with a known, trusted CA.  This
   message is always fatal.
 
-access_denied -
+access_denied
 : A valid certificate was received, but when access control was
   applied, the sender decided not to proceed with negotiation.  This
   message is always fatal.
 
-decode_error -
+decode_error
 : A message could not be decoded because some field was out of the
   specified range or the length of the message was incorrect.  This
   message is always fatal and should never be observed in
   communication between proper implementations (except when messages
   were corrupted in the network).
 
-decrypt_error -
+decrypt_error
 : A handshake cryptographic operation failed, including being unable
   to correctly verify a signature or validate a Finished message.
   This message is always fatal.
 
-export_restriction_RESERVED -
+export_restriction_RESERVED
 : This alert was used in some earlier versions of TLS.  It MUST NOT
   be sent by compliant implementations.
 
-protocol_version -
+protocol_version
 : The protocol version the client has attempted to negotiate is
   recognized but not supported.  (For example, old protocol versions
   might be avoided for security reasons.)  This message is always
   fatal.
 
-insufficient_security -
+insufficient_security
 : Returned instead of handshake_failure when a negotiation has
   failed specifically because the server requires ciphers more
   secure than those supported by the client.  This message is always
   fatal.
 
-internal_error -
+internal_error
 : An internal error unrelated to the peer or the correctness of the
   protocol (such as a memory allocation failure) makes it impossible
   to continue.  This message is always fatal.
 
-user_canceled -
+user_canceled
 : This handshake is being canceled for some reason unrelated to a
   protocol failure.  If the user cancels an operation after the
   handshake is complete, just closing the connection by sending a
   close_notify is more appropriate.  This alert should be followed
   by a close_notify.  This message is generally a warning.
 
-no_renegotiation -
+no_renegotiation
 : Sent by the client in response to a hello request or by the server
   in response to a client hello after initial handshaking.  Either
   of these would normally lead to renegotiation; when that is not
@@ -1609,7 +1609,7 @@ no_renegotiation -
   communicate changes to these parameters after that point.  This
   message is always a warning.
 
-unsupported_extension -
+unsupported_extension
 : sent by clients that receive an extended server hello containing
   an extension that they did not put in the corresponding client
   hello.  This message is always fatal.
@@ -1860,7 +1860,7 @@ the protocol.
               opaque random_bytes[28];
           } Random;
 
-gmt_unix_time -
+gmt_unix_time
 : The current time and date in standard UNIX 32-bit format
   (seconds since the midnight starting Jan 1, 1970, UTC, ignoring
   leap seconds) according to the sender's internal clock.  Clocks
@@ -1870,7 +1870,7 @@ gmt_unix_time -
   element is named using GMT, the predecessor of the current
   worldwide time base, UTC.
 
-random_bytes -
+random_bytes
 : 28 bytes generated by a secure random number generator.
 
 The ClientHello message includes a variable-length session identifier. If not
@@ -1934,29 +1934,29 @@ that this method of detecting optional data differs from the normal TLS method
 of having a variable-length field, but it is used for compatibility with TLS
 before extensions were defined.
 
-client_version -
+client_version
 : The version of the TLS protocol by which the client wishes to
   communicate during this session.  This SHOULD be the latest
   (highest valued) version supported by the client.  For this
   version of the specification, the version will be 3.3 (see
   {{backward-compatibility}} for details about backward compatibility).
 
-random -
+random
 : A client-generated random structure.
 
-session_id -
+session_id
 : The ID of a session the client wishes to use for this connection.
   This field is empty if no session_id is available, or if the
   client wishes to generate new security parameters.
 
-cipher_suites -
+cipher_suites
 : This is a list of the cryptographic options supported by the
   client, with the client's first preference first.  If the
   session_id field is not empty (implying a session resumption
   request), this vector MUST include at least the cipher_suite from
   that session.  Values are defined in {{the-cipher-suite}}.
 
-compression_methods -
+compression_methods
 : This is a list of the compression methods supported by the client,
   sorted by client preference.  If the session_id field is not empty
   (implying a session resumption request), it MUST include the
@@ -1965,7 +1965,7 @@ compression_methods -
   Thus, a client and server will always be able to agree on a
   compression method.
 
-extensions -
+extensions
 : Clients MAY request extended functionality from servers by sending
   data in the extensions field.  The actual "Extension" format is
   defined in {{hello-extensions}}.
@@ -2008,17 +2008,17 @@ Structure of this message:
 The presence of extensions can be detected by determining whether there are
 bytes following the compression_method field at the end of the ServerHello.
 
-server_version -
+server_version
 : This field will contain the lower of that suggested by the client
   in the client hello and the highest supported by the server.  For
   this version of the specification, the version is 3.3.  (See
   {{backward-compatibility}} for details about backward compatibility.)
 
-random -
+random
 : This structure is generated by the server and MUST be
   independently generated from the ClientHello.random.
 
-session_id -
+session_id
 : This is the identity of the session corresponding to this
   connection.  If the ClientHello.session_id was non-empty, the
   server will look in its session cache for a match.  If a match is
@@ -2037,17 +2037,17 @@ session_id -
   negotiation -- including negotiating new cipher suites -- during
   any handshake.
 
-cipher_suite -
+cipher_suite
 : The single cipher suite selected by the server from the list in
   ClientHello.cipher_suites.  For resumed sessions, this field is
   the value from the state of the session being resumed.
 
-compression_method -
+compression_method
 : The single compression algorithm selected by the server from the
   list in ClientHello.compression_methods.  For resumed sessions,
   this field is the value from the resumed session state.
 
-extensions -
+extensions
 : A list of extensions.  Note that only extensions offered by the
   client can appear in the server's list.
 
@@ -2167,14 +2167,14 @@ Note: Because not all signature algorithms and hash algorithms may be accepted
 by an implementation (e.g., DSA with SHA-1, but not SHA-256), algorithms here
 are listed in pairs.
 
-hash -
+hash
 : This field indicates the hash algorithm which may be used.  The
   values indicate support for unhashed data, MD5 {{RFC1321}}, SHA-1,
   SHA-224, SHA-256, SHA-384, and SHA-512 {{SHS}}, respectively.  The
   "none" value is provided for future extensibility, in case of a
   signature algorithm which does not require hashing before signing.
 
-signature -
+signature
 : This field indicates the signature algorithm that may be used.
   The values indicate anonymous signatures, RSASSA-PKCS1-v1_5
   {{RFC3447}} and DSA {{DSS}}, and ECDSA {{ECDSA}}, respectively.  The
@@ -2245,7 +2245,7 @@ Structure of this message:
            ASN.1Cert certificate_list<0..2^24-1>;
        } Certificate;
 
-certificate_list -
+certificate_list
 : This is a sequence (chain) of certificates.  The sender's
   certificate MUST come first in the list.  Each following
   certificate MUST directly certify the one preceding it.  Because
@@ -2418,12 +2418,14 @@ Structure of this message:
            };
        } ServerKeyExchange;
 
-params -
+params
 : The server's key exchange parameters.
 
-signed_params -
+
+signed_params
 : For non-anonymous key exchanges, a signature over the server's
   key exchange parameters.
+
 
 If the client has offered the "signature_algorithms" extension, the signature
 algorithm and hash algorithm MUST be a pair listed in that extension. Note that
@@ -2477,7 +2479,7 @@ Structure of this message:
            DistinguishedName certificate_authorities<0..2^16-1>;
        } CertificateRequest;
 
-certificate_types -
+certificate_types
 : A list of the types of certificate types that the client may
   offer.
 
@@ -2486,11 +2488,11 @@ certificate_types -
           rsa_fixed_dh    a certificate containing a static DH key.
           dss_fixed_dh    a certificate containing a static DH key
 
-supported_signature_algorithms -
+supported_signature_algorithms
 : A list of the hash/signature algorithm pairs that the server is
   able to verify, listed in descending order of preference.
 
-certificate_authorities -
+certificate_authorities
 : A list of the distinguished names {{X501}} of acceptable
   certificate_authorities, represented in DER-encoded format.  These
   distinguished names may specify a desired distinguished name for a
@@ -2831,7 +2833,7 @@ Structure of this message:
            } dh_public;
        } ClientDiffieHellmanPublic;
 
-dh_Yc -
+dh_Yc
 : The client's Diffie-Hellman public value (Yc).
 
 
@@ -2922,7 +2924,7 @@ equal to 12. This includes all existing cipher suites. Note that this
 representation has the same encoding as with previous versions. Future cipher
 suites MAY specify other lengths but such length MUST be at least 12 bytes.
 
-handshake_messages -
+handshake_messages
 : All of the data from all messages in this handshake (not
   including any HelloRequest messages) up to, but not including,
   this message.  This is only data visible at the handshake layer
@@ -3535,51 +3537,51 @@ end-entity certificate remain.
 
 # Glossary
 
-Advanced Encryption Standard (AES) -
+Advanced Encryption Standard (AES)
 : AES {{AES}} is a widely used symmetric encryption algorithm.  AES is
   a block cipher with a 128-, 192-, or 256-bit keys and a 16-byte
   block size.  TLS currently only supports the 128- and 256-bit key
   sizes.
 
-application protocol -
+application protocol
 : An application protocol is a protocol that normally layers
   directly on top of the transport layer (e.g., TCP/IP).  Examples
   include HTTP, TELNET, FTP, and SMTP.
 
-asymmetric cipher -
+asymmetric cipher
 : See public key cryptography.
 
-authenticated encryption with additional data (AEAD) -
+authenticated encryption with additional data (AEAD)
 : A symmetric encryption algorithm that simultaneously provides
   confidentiality and message integrity.
 
-authentication -
+authentication
 : Authentication is the ability of one entity to determine the
   identity of another entity.
 
-block cipher -
+block cipher
 : A block cipher is an algorithm that operates on plaintext in
   groups of bits, called blocks.  64 bits was, and 128 bits is, a
   common block size.
 
-bulk cipher -
+bulk cipher
 : A symmetric encryption algorithm used to encrypt large quantities
   of data.
 
-cipher block chaining (CBC) -
+cipher block chaining (CBC)
 : CBC is a mode in which every plaintext block encrypted with a
   block cipher is first exclusive-ORed with the previous ciphertext
   block (or, in the case of the first block, with the initialization
   vector).  For decryption, every block is first decrypted, then
   exclusive-ORed with the previous ciphertext block (or IV).
 
-certificate -
+certificate
 : As part of the X.509 protocol (a.k.a. ISO Authentication
   framework), certificates are assigned by a trusted Certificate
   Authority and provide a strong binding between a party's identity
   or some other attributes and its public key.
 
-client -
+client
 : The application entity that initiates a TLS connection to a
   server.  This may or may not imply that the client initiated the
   underlying transport connection.  The primary operational
@@ -3587,19 +3589,19 @@ client -
   generally authenticated, while the client is only optionally
   authenticated.
 
-client write key -
+client write key
 : The key used to encrypt data written by the client.
 
-client write MAC key -
+client write MAC key
 : The secret data used to authenticate data written by the client.
 
-connection -
+connection
 : A connection is a transport (in the OSI layering model definition)
   that provides a suitable type of service.  For TLS, such
   connections are peer-to-peer relationships.  The connections are
   transient.  Every connection is associated with one session.
 
-Data Encryption Standard -
+Data Encryption Standard
 : DES {{DES}} still is a very widely used symmetric encryption
   algorithm although it is considered as rather weak now.  DES is a
   block cipher with a 56-bit key and an 8-byte block size.  Note
@@ -3612,7 +3614,7 @@ Data Encryption Standard -
   key (24 bytes in the TLS key generation method) and provides the
   equivalent of 112 bits of security.
 
-Digital Signature Standard (DSS) -
+Digital Signature Standard (DSS)
 : A standard for digital signing, including the Digital Signing
   Algorithm, approved by the National Institute of Standards and
   Technology, defined in NIST FIPS PUB 186-2, "Digital Signature
@@ -3620,101 +3622,101 @@ Digital Signature Standard (DSS) -
   Commerce {{DSS}}.  A significant update {{DSS-3}} has been drafted and
   was published in March 2006.
 
-digital signatures -
+digital signatures
 : Digital signatures utilize public key cryptography and one-way
   hash functions to produce a signature of the data that can be
   authenticated, and is difficult to forge or repudiate.
 
-handshake -
+handshake
 : An initial negotiation between client and server that
   establishes the parameters of their transactions.
 
-Initialization Vector (IV) -
+Initialization Vector (IV)
 : When a block cipher is used in CBC mode, the initialization vector
   is exclusive-ORed with the first plaintext block prior to
   encryption.
 
-Message Authentication Code (MAC) -
+Message Authentication Code (MAC)
 : A Message Authentication Code is a one-way hash computed from a
   message and some secret data.  It is difficult to forge without
   knowing the secret data.  Its purpose is to detect if the message
   has been altered.
 
-master secret -
+master secret
 : Secure secret data used for generating encryption keys, MAC
   secrets, and IVs.
 
-MD5 -
+MD5
 : MD5 {{RFC1321}} is a hashing function that converts an arbitrarily long
   data stream into a hash of fixed size (16 bytes).  Due to
   significant progress in cryptanalysis, at the time of publication
   of this document, MD5 no longer can be considered a 'secure'
   hashing function.
 
-public key cryptography -
+public key cryptography
 : A class of cryptographic techniques employing two-key ciphers.
   Messages encrypted with the public key can only be decrypted with
   the associated private key.  Conversely, messages signed with the
   private key can be verified with the public key.
 
-one-way hash function -
+one-way hash function
 : A one-way transformation that converts an arbitrary amount of data
   into a fixed-length hash.  It is computationally hard to reverse
   the transformation or to find collisions.  MD5 and SHA are
   examples of one-way hash functions.
 
-RC4 -
+RC4
 : A stream cipher invented by Ron Rivest.  A compatible cipher is
   described in {{SCH}}.
 
-RSA -
+RSA
 : A very widely used public key algorithm that can be used for
   either encryption or digital signing.  {{RSA}}
 
-server -
+server
 : The server is the application entity that responds to requests for
   connections from clients.  See also "client".
 
-session -
+session
 : A TLS session is an association between a client and a server.
   Sessions are created by the handshake protocol.  Sessions define a
   set of cryptographic security parameters that can be shared among
   multiple connections.  Sessions are used to avoid the expensive
   negotiation of new security parameters for each connection.
 
-session identifier -
+session identifier
 : A session identifier is a value generated by a server that
   identifies a particular session.
 
-server write key -
+server write key
 : The key used to encrypt data written by the server.
 
-server write MAC key -
+server write MAC key
 : The secret data used to authenticate data written by the server.
 
-SHA -
+SHA
 : The Secure Hash Algorithm {{SHS}} is defined in FIPS PUB 180-2.  It
   produces a 20-byte output.  Note that all references to SHA
   (without a numerical suffix) actually use the modified SHA-1
   algorithm.
 
-SHA-256 -
+SHA-256
 : The 256-bit Secure Hash Algorithm is defined in FIPS PUB 180-2.
   It produces a 32-byte output.
 
-SSL -
+SSL
 : Netscape's Secure Socket Layer protocol {{SSL3}}.  TLS is based on
   SSL Version 3.0.
 
-stream cipher -
+stream cipher
 : An encryption algorithm that converts a key into a
   cryptographically strong keystream, which is then exclusive-ORed
   with the plaintext.
 
-symmetric cipher -
+symmetric cipher
 : See bulk cipher.
 
-Transport Layer Security (TLS) -
+Transport Layer Security (TLS)
 : This protocol; also, the Transport Layer Security working group of
   the Internet Engineering Task Force (IETF).  See "Working Group
   Information" at the end of this document (see page 99).
@@ -3779,21 +3781,21 @@ Transport Layer Security (TLS) -
     SHA       HMAC-SHA1       20            20
     SHA256    HMAC-SHA256     32            32
 
-Type -
+Type
 : Indicates whether this is a stream cipher or a block cipher
   running in CBC mode.
 
-Key Material -
+Key Material
 : The number of bytes from the key_block that are used for
   generating the write keys.
 
-IV Size -
+IV Size
 : The amount of data needed to be generated for the initialization
   vector.  Zero for stream ciphers; equal to the block size for
   block ciphers (this is equal to
   SecurityParameters.record_iv_length).
 
-Block Size -
+Block Size
 : The amount of data a block cipher enciphers in one chunk; a block
   cipher running in CBC mode can only encrypt an even multiple of
   its block size.
@@ -4004,33 +4006,33 @@ not considered to be a part of the handshake message.
            opaque challenge[V2ClientHello.challenge_length;
        } V2ClientHello;
 
-msg_length -
+msg_length
 : The highest bit MUST be 1; the remaining bits contain the length
   of the following data in bytes.
 
-msg_type -
+msg_type
 : This field, in conjunction with the version field, identifies a
   version 2 ClientHello message.  The value MUST be 1.
 
-version -
+version
 : Equal to ClientHello.client_version.
 
-cipher_spec_length -
+cipher_spec_length
 : This field is the total length of the field cipher_specs.  It
   cannot be zero and MUST be a multiple of the V2CipherSpec length
   (3).
 
-session_id_length -
+session_id_length
 : This field MUST have a value of zero for a client that claims to
   support TLS 1.2.
 
-challenge_length -
+challenge_length
 : The length in bytes of the client's challenge to the server to
   authenticate itself.  Historically, permissible values are between
   16 and 32 bytes inclusive.  When using the SSLv2 backward-
   compatible handshake the client SHOULD use a 32-byte challenge.
 
-cipher_specs -
+cipher_specs
 : This is a list of all CipherSpecs the client is willing and able
   to use.  In addition to the 2.0 cipher specs defined in {{SSL2}},
   this includes the TLS cipher suites normally sent in
@@ -4038,10 +4040,10 @@ cipher_specs -
   zero byte.  For example, the TLS cipher suite {0x00,0x0A} would be
   sent as {0x00,0x00,0x0A}.
 
-session_id -
+session_id
 : This field MUST be empty.
 
-challenge -
+challenge
 : Corresponds to ClientHello.random.  If the challenge length is
   less than 32, the TLS server will pad the data with leading (note:
   not trailing) zero bytes to make it 32 bytes long.
