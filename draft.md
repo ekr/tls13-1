@@ -631,9 +631,9 @@ For example:
 
 ##  Cryptographic Attributes
 
-The five cryptographic operations -- digital signing, stream cipher encryption,
+The five cryptographic operations --- digital signing, stream cipher encryption,
 block cipher encryption, authenticated encryption with additional data (AEAD)
-encryption, and public key encryption -- are designated digitally-signed,
+encryption, and public key encryption --- are designated digitally-signed,
 stream-ciphered, block-ciphered, aead- ciphered, and public-key-encrypted,
 respectively. A field's cryptographic processing is specified by prepending an
 appropriate key word designation before the field's type specification.
@@ -2034,7 +2034,7 @@ session_id
   originally negotiated with.  Note that there is no requirement
   that the server resume any session even if it had formerly
   provided a session_id.  Clients MUST be prepared to do a full
-  negotiation -- including negotiating new cipher suites -- during
+  negotiation --- including negotiating new cipher suites --- during
   any handshake.
 
 cipher_suite
@@ -2130,7 +2130,7 @@ be taken into account when designing new extensions:
 - It would be technically possible to use extensions to change major aspects
   of the design of TLS; for example the design of cipher suite negotiation.
   This is not recommended; it would be more appropriate to define a new version
-  of TLS -- particularly since the TLS handshake algorithms have specific
+  of TLS --- particularly since the TLS handshake algorithms have specific
   protection against version rollback attacks based on the version number, and
   the possibility of version rollback should be a significant consideration in
   any major design change.
@@ -2734,12 +2734,18 @@ words:
 
 3. If the PKCS#1 padding is not correct, or the length of message
    M is not exactly 48 bytes:
+
          pre_master_secret = ClientHello.client_version || R
+
    else If ClientHello.client_version <= TLS 1.0, and version
    number check is explicitly disabled:
+
          pre_master_secret = M
+
    else:
-         pre_master_secret = ClientHello.client_version || M\[2..47\]
+
+         pre_master_secret = ClientHello.client_version || M[2..47]
+
 
 Note that explicitly constructing the pre_master_secret with the
 ClientHello.client_version produces an invalid master_secret if the client has
@@ -2754,13 +2760,20 @@ formatting error and randomize the premaster secret completely:
 
 3. If the PKCS#1 padding is not correct, or the length of message
    M is not exactly 48 bytes:
+
          pre_master_secret = R
+
    else If ClientHello.client_version <= TLS 1.0, and version
    number check is explicitly disabled:
+
          premaster secret = M
+
    else If M\[0..1\] != ClientHello.client_version:
+
          premaster secret = R
+
    else:
+
          premaster secret = M
 
 Although no practical attacks against this construction are known, Klima et al.
@@ -2788,7 +2801,7 @@ bytes are redundant in the case of RSA because the EncryptedPreMasterSecret is
 the only data in the ClientKeyExchange and its length can therefore be
 unambiguously determined. The SSLv3 specification was not clear about the
 encoding of public-key- encrypted data, and therefore many SSLv3
-implementations do not include the length bytes -- they encode the
+implementations do not include the length bytes --- they encode the
 RSA-encrypted data directly in the ClientKeyExchange message.
 
 This specification requires correct encoding of the EncryptedPreMasterSecret
@@ -2925,6 +2938,7 @@ representation has the same encoding as with previous versions. Future cipher
 suites MAY specify other lengths but such length MUST be at least 12 bytes.
 
 handshake_messages
+
 : All of the data from all messages in this handshake (not
   including any HelloRequest messages) up to, but not including,
   this message.  This is only data visible at the handshake layer
@@ -3288,7 +3302,7 @@ This section describes protocol types and constants.
     } Certificate;
 
     enum { dhe_dss, dhe_rsa, dh_anon, rsa,dh_dss, dh_rsa
-           /* may be extended, e.g., for ECDH -- see [TLSECC] */
+           /* may be extended, e.g., for ECDH --- see [TLSECC] */
          } KeyExchangeAlgorithm;
 
     struct {
@@ -3314,7 +3328,7 @@ This section describes protocol types and constants.
             case dh_rsa:
                 struct {} ;
                /* message is omitted for rsa, dh_dss, and dh_rsa */
-            /* may be extended, e.g., for ECDH -- see {{RFC4492}} */
+            /* may be extended, e.g., for ECDH --- see {{RFC4492}} */
     } ServerKeyExchange;
 
     enum {
