@@ -1,11 +1,11 @@
 ---
-title: The Transport Layer Security (TLS) Protocol Version 1.2
+title: The Transport Layer Security (TLS) Protocol Version 1.3
 abbrev: TLS
 docname: draft-ietf-tls13-00
 date: 2014
 category: std
 updates: 4492
-obsoletes: 3268, 4346, 4366
+obsoletes: 3268, 4346, 4366, 5246
 
 ipr: trust200902
 area: General
@@ -255,16 +255,24 @@ informative:
 
 --- abstract
 
-This document specifies Version 1.2 of the Transport Layer Security
+This document specifies Version 1.3 of the Transport Layer Security
 (TLS) protocol.  The TLS protocol provides communications security
 over the Internet.  The protocol allows client/server applications to
 communicate in a way that is designed to prevent eavesdropping,
 tampering, or message forgery.
-
 --- middle
 
 
 #  Introduction
+
+DISCLAIMER:
+This document is simply a copy of RFC 5246 translated
+into markdown format with no intentional technical or editorial
+changes beyond updating the references and minor reformatting introduced
+by the translation. It is being submitted
+as-is to create a clearer revision history for future versions.
+Any errata in TLS 1.2 remain in this version. Thanks to Mark
+Nottingham for doing the markdown translation.
 
 The primary goal of the TLS protocol is to provide privacy and data integrity
 between two communicating applications. The protocol is composed of two layers:
